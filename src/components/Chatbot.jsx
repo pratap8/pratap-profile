@@ -7,21 +7,17 @@ function Chatbot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Auto-switch API for Local vs Vercel
-  const API_URL = import.meta.env.DEV
-    ? "http://localhost:5000/api/chat"
-    : "/api/chat";
-
   const handleSend = async () => {
     const question = input.trim();
     if (!question) return;
 
+    // show user message
     setMessages((prev) => [...prev, { from: "user", text: question }]);
     setInput("");
     setLoading(true);
 
     try {
-      const resp = await fetch(API_URL, {
+const resp = await fetch("http://localhost:5000/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
@@ -37,9 +33,9 @@ function Chatbot() {
         ...prev,
         { from: "bot", text: "Error: unable to reach AI." },
       ]);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -63,7 +59,6 @@ function Chatbot() {
                 {msg.text}
               </div>
             ))}
-
             {loading && <div className="msg bot">Thinking...</div>}
           </div>
 
