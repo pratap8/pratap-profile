@@ -25,6 +25,9 @@ docker run -d -p 3000:80 pratap-portfolio
 //Normal start in terminal command:
 npm start
 
+//deploy in vercel directly
+vercel --prod
+
 
 Note: You can direct run inside docker
 
