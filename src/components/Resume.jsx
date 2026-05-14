@@ -38,10 +38,14 @@ const Resume = () => {
     reader.readAsDataURL(file);
   };
 
-  // Delete uploaded resume
-  const handleDelete = () => {
-    localStorage.removeItem("resumeFile");
-    setResumeFile(null);
+  // Download uploaded resume
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = resumeFile;
+    link.download = "PratapResume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -57,8 +61,8 @@ const Resume = () => {
           {/* Show static PDF for GitHub Pages */}
           {isGitHub ? (
             <iframe
-              src={`${process.env.PUBLIC_URL}/ResumePratap.pdf#toolbar=0&navpanes=0`}
-              title="ResumePratap"
+              src={`${process.env.PUBLIC_URL}/PratapResume.pdf#toolbar=0&navpanes=0`}
+              title="PratapResume"
               width="100%"
               height="500px"
               style={{ border: "none" }}
@@ -81,8 +85,8 @@ const Resume = () => {
                 height="500px"
                 style={{ border: "none" }}
               ></iframe>
-              <button className="resume-btn delete" onClick={handleDelete}>
-                Delete Resume
+              <button className="resume-btn download" onClick={handleDownload}>
+                Download Resume
               </button>
             </div>
           )}

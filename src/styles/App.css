@@ -374,6 +374,14 @@ body {
   background-color: #b83a3a;
 }
 
+.resume-btn.download {
+  background-color: #28a745;
+}
+
+.resume-btn.download:hover {
+  background-color: #1f7f33;
+}
+
 .upload-label {
   cursor: pointer;
 }
