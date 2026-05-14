@@ -382,9 +382,6 @@ body {
   background-color: #1f7f33;
 }
 
-.upload-label {
-  cursor: pointer;
-}
 
 /* ---------- Modal ---------- */
 .modal-overlay {
@@ -445,18 +442,6 @@ body {
 .resume-right {
   flex: 2;
   min-width: 300px;
-}
-
-.upload-area {
-  text-align: center;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  padding: 40px;
-  background-color: #fafafa;
-}
-
-.upload-area input {
-  margin-top: 15px;
 }
 
 .resume-preview {

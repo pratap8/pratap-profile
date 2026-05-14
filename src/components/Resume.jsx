@@ -3,45 +3,21 @@ import "../styles/App.css";
 
 const Resume = () => {
   const [resumeFile, setResumeFile] = useState(null);
-  const [isGitHub, setIsGitHub] = useState(false);
+  const defaultResumeUrl = `${process.env.PUBLIC_URL || ""}/PratapResume.pdf`;
 
-  // Check if hosted on GitHub Pages
+  // Load any stored uploaded resume
   useEffect(() => {
-    const host = window.location.hostname;
-    if (host.includes("github.io")) {
-      setIsGitHub(true);
-    } else {
-      const storedFile = localStorage.getItem("resumeFile");
-      if (storedFile) {
-        setResumeFile(storedFile);
-      }
+    const storedFile = localStorage.getItem("resumeFile");
+    if (storedFile) {
+      setResumeFile(storedFile);
     }
   }, []);
 
-  // Handle PDF upload
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.type !== "application/pdf") {
-      alert("❌ Only PDF files are allowed!");
-      e.target.value = null;
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      localStorage.setItem("resumeFile", reader.result);
-      setResumeFile(reader.result);
-      window.scrollTo(0, 0);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  // Download uploaded resume
+  // Download uploaded or default resume
   const handleDownload = () => {
+    const downloadUrl = resumeFile || defaultResumeUrl;
     const link = document.createElement("a");
-    link.href = resumeFile;
+    link.href = downloadUrl;
     link.download = "PratapResume.pdf";
     document.body.appendChild(link);
     link.click();
@@ -58,38 +34,18 @@ const Resume = () => {
 
         {/* Right side */}
         <div className="resume-right">
-          {/* Show static PDF for GitHub Pages */}
-          {isGitHub ? (
+          <div className="resume-preview">
             <iframe
-              src={`${process.env.PUBLIC_URL}/PratapResume.pdf#toolbar=0&navpanes=0`}
-              title="PratapResume"
+              src={`${resumeFile || defaultResumeUrl}#toolbar=0&navpanes=0`}
+              title={resumeFile ? "Resume Preview" : "PratapResume"}
               width="100%"
               height="500px"
               style={{ border: "none" }}
-            />
-          ) : !resumeFile ? (
-            <div className="upload-area">
-              <p>No resume uploaded yet.</p>
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileUpload}
-              />
-            </div>
-          ) : (
-            <div className="resume-preview">
-              <iframe
-                src={`${resumeFile}#toolbar=0&navpanes=0`}
-                title="Resume Preview"
-                width="100%"
-                height="500px"
-                style={{ border: "none" }}
-              ></iframe>
-              <button className="resume-btn download" onClick={handleDownload}>
-                Download Resume
-              </button>
-            </div>
-          )}
+            ></iframe>
+            <button className="resume-btn download" onClick={handleDownload}>
+              Download Resume
+            </button>
+          </div>
         </div>
       </div>
     </section>
