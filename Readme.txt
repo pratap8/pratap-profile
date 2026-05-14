@@ -1,3 +1,5 @@
+//This Git is only dedicated to Vercel
+
 //Insert into GIT
 git add .
 git commit -m "<Any relatable comment>"
@@ -9,8 +11,6 @@ npm run deploy
 //Vercel command
 npm run build
 
-//run below sttaic page
-https://pratap8.github.io/pratap-portfolio/
 
 
 Whenever some edit is done in the project use below command

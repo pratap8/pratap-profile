@@ -5,10 +5,30 @@ const Experience = () => {
   return (
     <section id="experience" className="experience-section">
       <h2 className="section-title">Experience</h2>
-
       <div className="experience-card">
         <h3>Analyst – Deloitte</h3>
-        <p className="duration">June 2025 – Present | Hyderabad (Hybrid)</p>
+        <p className="duration"> Client – VERIZON(US) | August 2025 – Present | Hyderabad (Hybrid)</p>
+        <ul>
+          <li>Currently working as a Java Full-Stack Developer at Verizon, engaged in the design, development, and optimization of
+                enterprise-level applications where we delivered production-grade enterprise solutions .
+          </li>
+          <li>Gathering end-to-end requirements and delivering solutions by collaborating closely with business stakeholders and
+              clients in an Agile environment.</li>
+          <li>Developing both backend and frontend components using Java, Spring Boot, React, and JSP to build scalable and
+user-friendly applications.</li>
+          <li>Actively involved in defect resolution, debugging, and performance optimization to ensure application stability and
+reliability.</li>
+          <li>Writing robust unit tests using JUnit (Mockito framework), ensuring high code coverage and maintaining application
+reliability.</li>
+          <li>Proficient in database development, including writing complex SQL queries, stored procedures, and performance tuning.</li>
+        <li> Implementing and enhancing application security using industry best practices (authentication, secure coding).</li>
+        <li>Collaborating closely with cross-functional teams—including QA and DevOps—to ensure smooth integration, code
+quality, and timely delivery.</li>
+        </ul>
+      </div>
+      <div className="experience-card">
+        <h3>Analyst – Deloitte</h3>
+        <p className="duration">June 2025 – August 2025 | Hyderabad (Hybrid)</p>
         <ul>
           <li>Performed in-depth technical code reviews and impact analysis across 7 enterprise applications, uncovering >5000
             impactful issues.
@@ -27,7 +47,7 @@ const Experience = () => {
       </div>
       <div className="experience-card">
         <h3>Software Engineer – LTIMindtree</h3>
-        <p className="duration">March 2022 – June 2025 | Chennai (Hybrid)</p>
+        <p className="duration">Client – CITI(Singapore) | March 2022 – June 2025 | Chennai (Hybrid)</p>
         <ul>
           <li>Developed executable code and SQL queries based on business requirements, boosting project outcomes by
             25%.</li>
