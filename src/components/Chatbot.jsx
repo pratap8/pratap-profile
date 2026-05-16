@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
-import { askGroq } from "../services/groqService";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +25,15 @@ function Chatbot() {
     setLoading(true);
 
     try {
-      // ✅ Call Groq API with resume context
-      const reply = await askGroq(message);
+      // ✅ Call backend API endpoint (works on Vercel)
+      const resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await resp.json();
+      const reply = data?.reply || data?.error || "No response from AI.";
       setMessages((prev) => [...prev, { from: "bot", text: reply }]);
     } catch (err) {
       console.error("Chatbot error:", err);
