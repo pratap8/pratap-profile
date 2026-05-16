@@ -1,4 +1,6 @@
-//This Git is only dedicated to Vercel
+//This Git is only dedicated to Vercel just push the changes
+into github it will update the changes into vercel as well
+
 
 //Insert into GIT
 git add .
