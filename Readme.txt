@@ -1,6 +1,8 @@
 //This Git is only dedicated to Vercel just push the changes
 into github it will update the changes into vercel as well
-
+//Run ChatBot in local you need two terminal
+    1)node server.cjs 2>&1
+    2)npm run start
 
 //Insert into GIT
 git add .

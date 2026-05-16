@@ -3,80 +3,127 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs/promises");
-const path = require("path");
-const pdfParse = require("pdf-parse");
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-let cachedText = "";
+// Resume data (same as in api/chat.cjs)
+const resumeData = `
+PHOOL BABU RAJ PRATAP SINGH
+Java Full Stack Developer | Spring Boot | React | MySQL | Microservices
++91-8790565427 | phool8790@gmail.com | LinkedIn | Portfolio
 
-// ✅ Load PDF when the server starts
-async function loadPdf() {
-  try {
-    const filePath = path.join(process.cwd(), "public", "pratapInfo.pdf");
-    const data = await fs.readFile(filePath);
+PROFESSIONAL SUMMARY
+Skilled Java Developer with 4 years' experience in software development activities, seeking a challenging role to make use of my skills to achieve goals of the company. Expert in designing, developing, and optimizing enterprise-level applications. Proficient in full-stack development using Java, Spring Boot, React, and databases. Strong track record in delivering production-grade solutions with focus on code quality, security, and performance optimization.
 
-    const pdf = await pdfParse(data);
-    cachedText = pdf.text.replace(/\s+/g, " ").trim();
+PROFESSIONAL EXPERIENCE
 
-    console.log("✅ PDF loaded successfully!");
-  } catch (err) {
-    console.error("❌ PDF load failed:", err);
-  }
-}
-loadPdf();
+Deloitte (Hybrid - Hyderabad) - Sep 2025 – Present
+Analyst | Client: Verizon
+• Currently working as a Java Full-Stack Developer at Verizon, engaged in the design, development, and optimization of enterprise-level applications where we delivered production-grade enterprise solutions.
+• Gathering end-to-end requirements and delivering solutions by collaborating closely with business stakeholders and clients in an Agile environment.
+• Developing both backend and frontend components using Java, Spring Boot, React, and JSP to build scalable and user-friendly applications.
+• Actively involved in defect resolution, debugging, and performance optimization to ensure application stability and reliability.
+• Writing robust unit tests using JUnit (Mockito framework), ensuring high code coverage and maintaining application reliability.
+• Proficient in database development, including writing complex SQL queries, stored procedures, and performance tuning.
+• Implementing and enhancing application security using industry best practices (authentication, secure coding).
+• Collaborating closely with cross-functional teams—including QA and DevOps—to ensure smooth integration, code quality, and timely delivery.
+
+Deloitte (Hybrid - Hyderabad) - June 2025 – Sep 2025
+Analyst | Client: Confidential
+• Performed in-depth technical code reviews and impact analysis across 7 enterprise applications, uncovering more than 5000 impactful issues.
+• Identified critical risks such as hard-coded passwords inside codebase, missing WHERE clauses in SQL queries, and absent null checks and many more.
+• Delivered insights that enabled leadership to present risks effectively to the client, strengthening trust and positioning Deloitte for future business opportunities.
+
+LTIMindtree (Hybrid - Chennai) - March 2022 – June 2025
+Software Engineer | Client: CITI Bank
+• Developed executable code and SQL queries based on business requirements, boosting project outcomes by 25%.
+• Enhanced user experience by using the Chart.js library to display personalized data through interactive charts.
+• Designed and maintained RESTful APIs using Spring Boot, ensuring reliable and scalable architecture.
+• Optimized Database performance (SQL queries), resulting in a 30% performance improvement and faster data processing.
+• Conducted regular Black Duck scans, reducing vulnerabilities by 30%.
+• Performed code analysis with SonarQube, achieving a 35% bug reduction, >90% JUnit coverage with Mockito, and eliminated 100+ code smells using SonarLint.
+• Utilized JIRA for comprehensive defect tracking and streamlined issue resolution.
+
+TECHNICAL SKILLS
+Languages: Java, JavaScript, JSP, FTL, Chart.js, SQL, React
+Technologies/Frameworks: Spring Boot, Spring MVC, Java J2EE, Microservices Frameworks, IBM Liberty Server, MySQL, Oracle SQL, Bootstrap, Tomcat, J-Frog, Jenkins, AJAX
+Developer Tools: IntelliJ, GitLab, VS Code, Eclipse, Postman, JIRA, Confluence, Bitbucket, GitHub Copilot
+
+CERTIFICATIONS
+Oracle Certified Professional: Java SE 11 Developer
+Microsoft Certified: Azure Fundamentals (AZ-900)
+Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate
+
+EDUCATION
+MLR Institute of Technology, Hyderabad
+B.Tech
+
+EXTRACURRICULAR
+• Involved in Corporate Social Responsibility initiatives, educating rural students.
+• Member of Telangana Information Technology Association (TITA) since 2019.
+`;
 
 // ✅ AI Chat Endpoint
 app.post("/api/chat", async (req, res) => {
-  const { question } = req.body;
+  const { message } = req.body;
 
-  if (!question) {
-    return res.status(400).json({ error: "Missing question" });
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
   }
 
   try {
-    const prompt = `
-You must answer ONLY from this resume content.
-If the answer is not available in the resume, say:
-"I don't know from the document."
+    const apiKey = process.env.GROQ_API_KEY;
+    console.log("🔑 Using Groq Key:", apiKey ? "✅ Found" : "❌ Missing");
 
-RESUME CONTENT:
-${cachedText}
+    if (!apiKey) {
+      console.error("❌ Missing GROQ_API_KEY");
+      return res.status(500).json({ error: "Missing GROQ_API_KEY environment variable" });
+    }
 
-QUESTION: ${question}
-ANSWER:
-`;
-
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`
       },
       body: JSON.stringify({
-        model: "mistralai/mixtral-8x7b-instruct",
+        model: "llama-3.3-70b-versatile",
         messages: [
-          { role: "system", content: "Answer based only on the resume content." },
-          { role: "user", content: prompt }
+          {
+            role: "system",
+            content: `You are an AI assistant representing Phool Babu Raj Pratap Singh, a Java Full Stack Developer. ${resumeData}
+
+Important Instructions:
+- Answer questions ONLY based on the resume provided above
+- If information is not in the resume, respond with: "I don't have that information in my resume"
+- Keep responses concise and professional
+- Be friendly and helpful`,
+          },
+          { role: "user", content: message },
         ],
-        max_tokens: 400,
-        temperature: 0.2
-      })
+        temperature: 0.7,
+        max_tokens: 1024,
+      }),
     });
 
-    const json = await response.json();
-    const answer = json?.choices?.[0]?.message?.content || "No valid response.";
+    const data = await response.json();
+    console.log("🔹 Groq Response Status:", response.status);
 
-    res.json({ answer });
+    if (!response.ok) {
+      console.error("❌ Groq API Error:", data);
+      return res.status(400).json({ error: data.error?.message || "Groq API request failed" });
+    }
+
+    const reply = data?.choices?.[0]?.message?.content || "No response from AI";
+    res.json({ reply });
   } catch (err) {
-    console.error("❌ Chat error:", err);
-    res.status(500).json({ error: err.message });
+    console.error("❌ Chat error:", err.message);
+    res.status(500).json({ error: err.message || "Internal Server Error" });
   }
 });
+
 
 // ✅ Start local server
 const PORT = 5000;

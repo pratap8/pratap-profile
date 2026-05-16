@@ -74,12 +74,14 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const apiKey = process.env.REACT_APP_GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     console.log("🔑 Using Groq Key:", apiKey ? "✅ Found" : "❌ Missing");
+    console.log("🔑 Available env vars:", Object.keys(process.env).filter(k => k.includes('GROQ')).join(', '));
 
     if (!apiKey) {
-      console.error("❌ Missing REACT_APP_GROQ_API_KEY");
-      return res.status(500).json({ error: "Missing REACT_APP_GROQ_API_KEY in Vercel environment" });
+      console.error("❌ Missing GROQ_API_KEY environment variable");
+      console.error("Available keys:", Object.keys(process.env).filter(k => k.includes('GROQ')));
+      return res.status(500).json({ error: "Missing GROQ_API_KEY in Vercel environment. Add it in Vercel Dashboard > Settings > Environment Variables" });
     }
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
