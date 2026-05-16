@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
+import { askGroq } from "../services/groqService";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,6 @@ function Chatbot() {
   const [loading, setLoading] = useState(false);
   const bodyRef = useRef(null);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
@@ -19,21 +19,12 @@ function Chatbot() {
     const message = input.trim();
     if (!message) return;
 
-    // Show user message
     setMessages((prev) => [...prev, { from: "user", text: message }]);
     setInput("");
     setLoading(true);
 
     try {
-      // ✅ Call backend API endpoint (works on Vercel)
-      const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-
-      const data = await resp.json();
-      const reply = data?.reply || data?.error || "No response from AI.";
+      const reply = await askGroq(message);
       setMessages((prev) => [...prev, { from: "bot", text: reply }]);
     } catch (err) {
       console.error("Chatbot error:", err);
@@ -62,6 +53,11 @@ function Chatbot() {
           </div>
 
           <div className="chatbot-body" ref={bodyRef}>
+            {messages.length === 0 && (
+              <div className="msg bot">
+                👋 Hi! I'm Pratap's AI Assistant. Ask me anything about his experience, skills, or projects!
+              </div>
+            )}
             {messages.map((msg, i) => (
               <div key={i} className={`msg ${msg.from}`}>
                 {msg.text}
@@ -78,7 +74,9 @@ function Chatbot() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
-            <button onClick={handleSend}>Send</button>
+            <button onClick={handleSend} disabled={loading}>
+              {loading ? "..." : "Send"}
+            </button>
           </div>
         </div>
       )}
