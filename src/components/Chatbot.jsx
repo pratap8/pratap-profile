@@ -3,7 +3,7 @@ import "./Chatbot.css";
 import { askGroq } from "../services/groqService";
 
 function Chatbot() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
