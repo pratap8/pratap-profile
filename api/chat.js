@@ -79,13 +79,14 @@ export default async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
+    // Use REACT_APP_GROQ_API_KEY (the existing Vercel environment variable)
+    const apiKey = process.env.REACT_APP_GROQ_API_KEY;
     console.log("🔑 Using Groq Key:", apiKey ? "✅ Found" : "❌ Missing");
 
     if (!apiKey) {
-      console.error("❌ Missing GROQ_API_KEY environment variable");
+      console.error("❌ Missing REACT_APP_GROQ_API_KEY environment variable");
       return res.status(500).json({ 
-        error: "Missing GROQ_API_KEY. Add it in Vercel Dashboard > Settings > Environment Variables" 
+        error: "Missing REACT_APP_GROQ_API_KEY. Verify it exists in Vercel > Settings > Environment Variables" 
       });
     }
 
