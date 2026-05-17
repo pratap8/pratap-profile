@@ -6,6 +6,8 @@ export const askGroq = async (userMessage) => {
       ? "/api/chat" 
       : (process.env.REACT_APP_BACKEND_URL || "http://localhost:5000") + "/api/chat";
     
+    console.log("🔗 Calling API:", backendUrl, "| Env:", process.env.NODE_ENV);
+    
     const response = await fetch(backendUrl, {
       method: "POST",
       headers: {
@@ -16,15 +18,29 @@ export const askGroq = async (userMessage) => {
       }),
     });
 
+    console.log("📡 Response Status:", response.status, response.statusText);
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `Backend error: ${response.status}`);
+      let errorData;
+      const contentType = response.headers.get("content-type");
+      
+      try {
+        if (contentType && contentType.includes("application/json")) {
+          errorData = await response.json();
+          throw new Error(errorData.error || `Backend error: ${response.status}`);
+        } else {
+          const text = await response.text();
+          throw new Error(`API Error ${response.status}: ${text.substring(0, 200)}`);
+        }
+      } catch (parseError) {
+        throw new Error(`API Error ${response.status}: ${parseError.message}`);
+      }
     }
 
     const data = await response.json();
     return data.reply || "No response from AI";
   } catch (error) {
-    console.error("Chat API Error:", error);
+    console.error("❌ Chat API Error:", error);
     throw error;
   }
 };
