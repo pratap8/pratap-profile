@@ -1,8 +1,12 @@
 export const askGroq = async (userMessage) => {
   try {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+    // On Vercel, use relative path /api/chat
+    // In local development, use http://localhost:5000/api/chat
+    const backendUrl = process.env.NODE_ENV === "production" 
+      ? "/api/chat" 
+      : (process.env.REACT_APP_BACKEND_URL || "http://localhost:5000") + "/api/chat";
     
-    const response = await fetch(`${backendUrl}/api/chat`, {
+    const response = await fetch(backendUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
