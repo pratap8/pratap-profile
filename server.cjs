@@ -12,7 +12,7 @@ app.use(express.json());
 const resumeData = `
 PHOOL BABU RAJ PRATAP SINGH
 Java Full Stack Developer | Spring Boot | React | MySQL | Microservices
-+91-8790565427 | phool8790@gmail.com | LinkedIn | Portfolio
++91-8790565427 | phool8790@gmail.com | LinkedIn:https://www.linkedin.com/in/pbrps/ | Portfolio
 
 PROFESSIONAL SUMMARY
 Skilled Java Developer with 4 years' experience in software development activities, seeking a challenging role to make use of my skills to achieve goals of the company. Expert in designing, developing, and optimizing enterprise-level applications. Proficient in full-stack development using Java, Spring Boot, React, and databases. Strong track record in delivering production-grade solutions with focus on code quality, security, and performance optimization.
@@ -59,6 +59,17 @@ Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate
 EDUCATION
 MLR Institute of Technology, Hyderabad
 B.Tech
+
+Publications
+• A review on theoretical analysis for solar powered thermal system by using acetone
+Published In: AIP Publishing
+Date: May 22, 2023
+Link: https://pubs.aip.org/aip/acp/article-abstract/2492/1/020068/2891984/A-review-on-theoretical-analysis-for-solar-powered?redirectedFrom=fulltext
+• Design Patent of Pepper Processing Machine
+Published In: Intellectual Property of India
+Date: Aug 6, 2021
+Journal No: 32/2021
+Link: https://search.ipindia.gov.in/IPOJournal/Journal/Patent
 
 EXTRACURRICULAR
 • Involved in Corporate Social Responsibility initiatives, educating rural students.
