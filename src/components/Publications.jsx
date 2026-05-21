@@ -4,6 +4,7 @@ import "../styles/App.css";
 const Publications = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [fileText, setFileText] = useState("");
+  const [showPatentPopup, setShowPatentPopup] = useState(false);
 
   // Load the Hanuman.txt file from the public folder
   useEffect(() => {
@@ -27,6 +28,7 @@ const Publications = () => {
       description: "Design Patent of Pepper Processing Machine",
       publishedIn: "Intellectual Property of India",
       date: "Aug 6, 2021",
+      designNumber: "316274-001",
       Application: "202141034362 A",
       journalNumber: "32/2021",
       link: "https://search.ipindia.gov.in/IPOJournal/Journal/Patent",
@@ -118,6 +120,78 @@ const Publications = () => {
         </div>
       )}
 
+      {/* Design Patent PDF Popup */}
+      {showPatentPopup && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowPatentPopup(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "10px",
+              width: "80%",
+              maxWidth: "900px",
+              maxHeight: "90%",
+              overflowY: "auto",
+              boxShadow: "0 0 15px rgba(0,0,0,0.3)",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button X */}
+            <button
+              onClick={() => setShowPatentPopup(false)}
+              style={{
+                position: "absolute",
+                top: "15px",
+                right: "15px",
+                background: "#333",
+                color: "#fff",
+                border: "none",
+                borderRadius: "50%",
+                width: "35px",
+                height: "35px",
+                fontSize: "24px",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 0,
+              }}
+            >
+              ×
+            </button>
+
+            <h3 style={{ textAlign: "center", marginBottom: "15px", marginTop: 0 }}>
+              Pepper Processing Machine Patent
+            </h3>
+            <iframe
+              src={`${process.env.PUBLIC_URL}/Pepper Processing Machine Patent.pdf`}
+              style={{
+                width: "100%",
+                height: "600px",
+                border: "none",
+                borderRadius: "5px",
+              }}
+              title="Pepper Processing Machine Patent"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Existing Publication Cards */}
       <div className="publications-grid">
         {publications.map((pub, index) => (
@@ -133,6 +207,11 @@ const Publications = () => {
               {pub.date && (
                 <p>
                   <strong>Date:</strong> {pub.date}
+                </p>
+              )}
+              {pub.designNumber && (
+                <p>
+                  <strong>Design Number:</strong> {pub.designNumber}
                 </p>
               )}
               {pub.application && (
@@ -152,14 +231,33 @@ const Publications = () => {
               )}
             </div>
 
-            <a
-              href={pub.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="view-btn"
-            >
-              View Publication
-            </a>
+            {index === 1 ? (
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  onClick={() => setShowPatentPopup(true)}
+                  className="view-btn"
+                >
+                  View Design Patent
+                </button>
+                <a
+                  href={pub.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="view-btn"
+                >
+                  View Publication
+                </a>
+              </div>
+            ) : (
+              <a
+                href={pub.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="view-btn"
+              >
+                View Publication
+              </a>
+            )}
           </div>
         ))}
       </div>
