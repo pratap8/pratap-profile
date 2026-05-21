@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/App.css";
+import "./Contact.css";
 
 const Contact = () => {
   return (
@@ -28,16 +28,14 @@ const Contact = () => {
           📞 +91 87905 65427
         </a>
         <a 
-  href="https://wa.me/918790565427"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="contact-btn whatsapp"
->
-  💬 WhatsApp Me
-</a>
-
+          href="https://wa.me/918790565427"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="contact-btn whatsapp"
+        >
+          💬 WhatsApp Me
+        </a>
       </div>
-
     </section>
   );
 };

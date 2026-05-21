@@ -1,0 +1,53 @@
+/* Contact Section Styles */
+.contact-section {
+  padding: 50px 30px;
+  background-color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.contact-text {
+  color: #555;
+  max-width: 600px;
+  margin: 10px auto 30px;
+  line-height: 1.6;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: bold;
+  color: white;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+  display: inline-block;
+}
+
+.contact-btn.email {
+  background-color: #4a4ae0;
+}
+
+.contact-btn.linkedin {
+  background-color: #0077b5;
+}
+
+.contact-btn.phone {
+  background-color: #28a745;
+}
+
+.contact-btn.whatsapp {
+  background-color: #25d366;
+}
+
+.contact-btn:hover {
+  transform: translateY(-4px);
+  opacity: 0.9;
+}

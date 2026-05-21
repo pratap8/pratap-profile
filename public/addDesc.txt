@@ -1,0 +1,68 @@
+Deloitte · Full-time
+
+Analyst
+
+Jun 2025 - Present
+
+Hyderabad, Telangana, India · Hybrid
+
+Present: Verizon (US)
+1) Currently working as a Java Full-Stack Developer for Verizon(Client), engaged in the design, development, and optimization of enterprise-level applications.
+2) Gathering end-to-end requirements and delivering solutions by collaborating with business stakeholders/Client.
+3) Writing robust unit tests using JUnit (Mockito framework), ensuring high code coverage and maintaining application reliability.
+4) Collaborating closely with cross-functional teams—including QA and DevOps—to ensure smooth integration, code quality, and timely delivery.
+
+Client: Confidential
+1) Performed in-depth technical code reviews and impact analysis across 7 enterprise applications, uncovering >5000 impactful issues.
+2) Utilized SonarQube to detect bugs, vulnerabilities, code smells, and security hotspots, identifying >20 high-severity and >1000 medium-severity issues per application.
+3) Identified critical risks such as hard-coded passwords inside codebase, missing WHERE clauses in SQL queries, and absent null checks and many more.
+4) Delivered insights that enabled leadership to present risks effectively to the client, strengthening trust and positioning Deloitte for business opportunities.
+
+
+
+LTIMindtree
+
+
+Senior Software Engineer
+
+Oct 2024 - Jun 2025 · 9 mos
+
+Chennai, Tamil Nadu, India · Hybrid
+
+Collaborated with cross-functional teams including functional analysts and QA testers to ensure seamless
+deliverables in each Scrum cycle.
+Enhanced user experience by using the Chart.js JavaScript library to display relevant, personalized data through interactive charts.
+Developed and maintained REST APIs using Spring Boot, ensuring reliable and scalable architecture.
+Played key role in migration from Monolithic architecture to Microservice architecture.
+
+Software Engineer
+
+Full-time
+
+Jun 2022 - Oct 2024 · 2 yrs 5 mos
+
+Chennai, Tamil Nadu, India · Hybrid
+
+Developed and modified software solutions according to detailed design requirements.
+• Developed executable code and queries from business requirements, boosting project outcomes by 25%.
+• Optimized SQL queries, achieving a 30% performance boost and faster data processing.
+• Conducted regular Black Duck scans, reducing vulnerabilities by 30% and enhancing product security.
+• Utilized JIRA for 100% defect tracking and streamlined issue resolution.
+• Performed code analysis with SonarQube, achieving a 35% bug reduction, above 90% test coverage 
+  using JUnit with Mockito, and eliminated 100+ code smells with Sonar Lint for improved maintainability.… more
+
+
+Trainee
+
+Internship
+
+Mar 2022 - Jun 2022 · 4 mos
+
+Hyderabad, Telangana, India · Remote
+
+Worked as Java full-stack developer, where we developed Bus Reservation System.
+Tech-Stack used:
+Front-end: Angular (12).
+Back-end: Java(8).
+Database: MySQL.
+Developed Fully functional site as per give requirement during internship.

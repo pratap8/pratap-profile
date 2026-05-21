@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/App.css";
+import "./Resume.css";
 
 const Resume = () => {
   const [resumeFile, setResumeFile] = useState(null);

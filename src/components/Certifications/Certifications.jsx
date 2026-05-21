@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/App.css";
+import "./Certifications.css";
 
 const Certificates = () => {
   const certificates = [
@@ -18,12 +18,11 @@ const Certificates = () => {
       image: `${process.env.PUBLIC_URL}/certificates/Azure Fundamentals.jpg`,
       link: `https://www.credly.com/badges/c86ea5d6-ccbc-4a74-8938-75f94c3e9035?source=linked_in_profile`,
     },  
-    // ➕ Add more certificates here
   ];
 
   return (
-    <section id="certificates" className="certificates-section">
-      <h2 className="section-title-certificate">Certificates</h2>
+    <section id="certificates" className="certifications-section">
+      <h2 className="section-title">Certificates</h2>
 
       <div className="certificates-grid">
         {certificates.map((cert, index) => (
@@ -38,7 +37,7 @@ const Certificates = () => {
               href={cert.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="view-btn"
+              className="certificate-view-btn"
             >
               View Certificate
             </a>

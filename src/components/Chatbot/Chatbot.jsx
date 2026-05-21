@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
-import { askGroq } from "../services/groqService";
+import { askGroq } from "../../services/groqService";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(true);

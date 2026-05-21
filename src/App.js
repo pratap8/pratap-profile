@@ -10,6 +10,8 @@ import Contact from "./components/Contact";
 import Certificate from "./components/Certifications";
 import Resume from "./components/Resume";
 import Publications from "./components/Publications";
+import HonorsAwards from "./components/HonorsAwards";
+import Education from "./components/Education";
 import Chatbot from "./components/Chatbot";
 
 function App() {
@@ -18,11 +20,13 @@ function App() {
       <Navbar />
       <Hero />
       <Experience />
-      <Projects />
-      <Skills />
+      <Education />
       <Resume />
       <Certificate />
       <Publications />
+      <HonorsAwards />
+      <Projects />
+      <Skills />
       <Contact />
 
       
