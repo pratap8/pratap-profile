@@ -45,9 +45,37 @@ Oracle Certified Professional: Java SE 11 Developer
 Microsoft Certified: Azure Fundamentals (AZ-900)
 Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate
 
-EDUCATION
-MLR Institute of Technology, Hyderabad
-B.Tech
+Education
+MLR Institute of Technology
+Bachelor of Technology - BTech
+
+CGPA: 8.3/10
+
+July 2017 – September 2020
+
+Winner of the IIT Madras I'MPACT Competition (National Level), 2019.
+Published a design patent for a Pepper Processing Machine.
+Published a research paper titled 'A Review on Theoretical Analysis of a Solar-Powered Thermal System Using Acetone.'
+Served as a member of TITA (Telangana Information Technology Association) in two districts: Mulugu and Wanaparthy.
+V N R Vignana Jyothi Institute of Engineering & Technology
+Diploma
+
+Grade: 84.85%
+
+September 2014 – April 2017
+
+Completed a paid internship at Roctool Engineers Pvt Ltd, gaining hands-on experience in practical engineering applications.
+Roctool Engineers Internship
+
+New Brilliant Techno High School
+School
+
+CGPA: 7.5/10
+
+Jun 2009 – Mar 2014
+
+Actively participated in outdoor sports, including Cricket and Volleyball.
+Secured 1st Place in Chess and 2nd Place in Essay Writing in competitive events.
 
 Publications
 • A review on theoretical analysis for solar powered thermal system by using acetone
@@ -59,6 +87,14 @@ Published In: Intellectual Property of India
 Date: Aug 6, 2021
 Journal No: 32/2021
 Link: https://search.ipindia.gov.in/IPOJournal/Journal/Patent
+
+Honors & Awards
+I'MPACT || Mechanica 2019
+Issued by IIT Madras · Mar 2019
+Led the team of five from fund raising till winning the competition.
+Won 1st Prize in the I'MPACT National-Level Competition conducted by IIT Madras.
+Pitched idea and received funding of ₹50,000 from MLRIT for the project.
+Awarded ₹8,000 by IIT Madras for successfully building a functional prototype(Pepper Processing Machine).
 
 EXTRACURRICULAR
 • Involved in Corporate Social Responsibility initiatives, educating rural students.

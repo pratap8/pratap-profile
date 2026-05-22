@@ -8,12 +8,12 @@ const Experience = () => {
   const experiences = [
     {
       company: "Deloitte",
-      position: "Analyst",
-      duration: "Jun 2025 - Present",
-      location: "Hyderabad, Telangana, India · Hybrid",
-      sections: [
+      isCompanyHeader: true,
+      positions: [
         {
-          title: "Present: Verizon (US)",
+          position: "Analyst - Client: Verizon (US)",
+          duration: "Sep 2026 - Present",
+          location: "Hyderabad, Telangana, India · Hybrid",
           achievements: [
             "Currently working as a Java Full-Stack Developer for Verizon(Client), engaged in the design, development, and optimization of enterprise-level applications.",
             "Gathering end-to-end requirements and delivering solutions by collaborating with business stakeholders/Client.",
@@ -22,7 +22,9 @@ const Experience = () => {
           ]
         },
         {
-          title: "Client: Confidential",
+          position: "Analyst - Client: Confidential",
+          duration: "Jun 2026 - Sep 2026 · 4 mos",
+          location: "Hyderabad, Telangana, India · Hybrid",
           achievements: [
             "Performed in-depth technical code reviews and impact analysis across 7 enterprise applications, uncovering >5000 impactful issues.",
             "Utilized SonarQube to detect bugs, vulnerabilities, code smells, and security hotspots, identifying >20 high-severity and >1000 medium-severity issues per application.",
@@ -30,11 +32,7 @@ const Experience = () => {
             "Delivered insights that enabled leadership to present risks effectively to the client, strengthening trust and positioning Deloitte for business opportunities."
           ]
         }
-      ],
-      pdf: {
-        src: "/Spot Award.pdf",
-        alt: "Spot Award Certificate"
-      }
+      ]
     },
     {
       company: "LTIMindtree",
