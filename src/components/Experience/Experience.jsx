@@ -9,6 +9,10 @@ const Experience = () => {
     {
       company: "Deloitte",
       isCompanyHeader: true,
+      pdf: {
+        src: "/Spot Award.pdf",
+        alt: "Spot Award"
+      },
       positions: [
         {
           position: "Analyst - Client: Verizon (US)",
@@ -103,6 +107,16 @@ const Experience = () => {
                     </div>
                   ))}
                 </div>
+
+                {exp.pdf && (
+                  <div
+                    className="pdf-preview-button"
+                    onClick={() => setSelectedPDF(exp.pdf)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    📄 View Award Certificate
+                  </div>
+                )}
               </div>
             ) : (
               <div className="experience-card">
