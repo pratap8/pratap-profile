@@ -1,0 +1,102 @@
+.footer-container {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 30px 20px;
+  text-align: center;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  margin-top: 60px;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pratap-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.pratap-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.5);
+}
+
+.pratap-btn:active {
+  transform: translateY(-1px);
+}
+
+.camera-btn {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.camera-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+}
+
+.camera-btn:active {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 20px 15px;
+    margin-top: 40px;
+  }
+
+  .footer-buttons {
+    gap: 15px;
+  }
+
+  .footer-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .footer-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 15px 10px;
+    margin-top: 30px;
+  }
+
+  .footer-buttons {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .footer-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+}

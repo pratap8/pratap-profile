@@ -1,47 +1,12 @@
-C:\Users\phool\React\pratap-profile> npm run start
-
-> pratap-profile@0.1.0 start
-> react-scripts start
-
-[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
-Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
-(node:12688) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-(node:12688) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-Starting the development server...
-Failed to compile.
-
-Attempted import error: './components/Navbar' does not contain a default export (imported as 'Navbar').
-ERROR in ./src/App.js 20:36-42
-export 'default' (imported as 'Navbar') was not found in './components/Navbar' (module has no exports)
-
-ERROR in ./src/App.js 24:35-39
-export 'default' (imported as 'Hero') was not found in './components/Hero' (module has no exports)
-
-ERROR in ./src/App.js 28:35-45
-export 'default' (imported as 'Experience') was not found in './components/Experience' (module has no exports)
-
-ERROR in ./src/App.js 32:35-43
-export 'default' (imported as 'Projects') was not found in './components/Projects' (module has no exports)
-
-ERROR in ./src/App.js 44:35-46
-export 'default' (imported as 'Certificate') was not found in './components/Certifications' (module has no exports)
-
-ERROR in ./src/App.js 52:35-42
-export 'default' (imported as 'Contact') was not found in './components/Contact' (module has no exports)
-
-ERROR in ./src/App.js 56:35-42
-export 'default' (imported as 'Chatbot') was not found in './components/Chatbot' (module has no exports)
-
-ERROR in ./src/components/Publications/Publications.jsx 40:35-47
-export 'default' (imported as 'HanumanPopup') was not found in './HanumanPopup' (module has no exports)
-
-ERROR in ./src/components/Publications/Publications.jsx 47:35-46
-export 'default' (imported as 'PatentPopup') was not found in './PatentPopup' (module has no exports)
-
-ERROR in ./src/components/Publications/Publications.jsx 56:70-85
-export 'default' (imported as 'PublicationCard') was not found in './PublicationCard' (module has no exports)
-
-webpack compiled with 10 errors
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+script.debug.js:1 [Vercel Web Analytics] Debug mode is enabled by default in development. No requests will be sent to the server.
+script.debug.js:1 [Vercel Web Analytics] [view] http://localhost:3000/camera 
+Object
+ /_vercel/insights/view
+favicon.ico:1 
+ Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+CameraPage.jsx:25 Stream obtained: 
+MediaStream {id: 'c9328871-52c1-440c-ba00-3aff263c8ca7', active: true, onaddtrack: null, onremovetrack: null, onactive: null, …}
+CameraPage.jsx:26 Video ref current: null
+CameraPage.jsx:44 Video ref is not available
+(anonymous)	@	CameraPage.jsx:44

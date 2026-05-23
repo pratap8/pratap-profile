@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Random Camera Capture</title>
+
+  <style>
+    body{
+      margin:0;
+      padding:20px;
+      background:#111;
+      color:white;
+      font-family:Arial;
+      text-align:center;
+    }
+
+    video{
+      width:100%;
+      max-width:400px;
+      border-radius:12px;
+      margin-top:20px;
+    }
+
+    button{
+      margin-top:20px;
+      padding:15px 25px;
+      font-size:18px;
+      border:none;
+      border-radius:10px;
+      background:#00b894;
+      color:white;
+    }
+
+    #status{
+      margin-top:15px;
+      font-size:18px;
+    }
+
+    img{
+      width:100%;
+      max-width:400px;
+      margin-top:20px;
+      border-radius:12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Random Camera Capture</h2>
+
+<video id="video" autoplay playsinline></video>
+
+<br>
+
+<button onclick="startRandomCapture()">
+  Start Random Capture
+</button>
+
+<div id="status"></div>
+
+<img id="photo"/>
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const statusText = document.getElementById("status");
+const photo = document.getElementById("photo");
+
+async function startCamera() {
+
+  try {
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "user"
+      },
+      audio: false
+    });
+
+    video.srcObject = stream;
+
+  } catch(err) {
+
+    alert("Camera permission denied");
+
+    console.log(err);
+  }
+}
+
+startCamera();
+
+function startRandomCapture() {
+
+  // random between 3 and 10 seconds
+  const randomDelay =
+    Math.floor(Math.random() * 7000) + 3000;
+
+  statusText.innerHTML =
+    "Photo will capture in " +
+    (randomDelay / 1000).toFixed(1) +
+    " seconds...";
+
+  setTimeout(() => {
+
+    capturePhoto();
+
+  }, randomDelay);
+}
+
+function capturePhoto() {
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.drawImage(video, 0, 0);
+
+  const imageData = canvas.toDataURL("image/png");
+
+  photo.src = imageData;
+
+  statusText.innerHTML = "Photo Captured Successfully";
+
+  // optional auto download
+  const link = document.createElement("a");
+  link.href = imageData;
+  link.download = "captured-photo.png";
+  link.click();
+}
+
+</script>
+
+</body>
+</html>
