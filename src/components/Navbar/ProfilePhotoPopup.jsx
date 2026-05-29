@@ -8,7 +8,7 @@ const ProfilePhotoPopup = ({ isOpen, onClose }) => {
     <div className="profile-photo-overlay" onClick={onClose}>
       <div className="profile-photo-popup" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>✕</button>
-        <img src="/DP.JPEG" alt="Profile" className="full-photo" />
+        <img src="/DP.jpeg" alt="Profile" className="full-photo" />
       </div>
     </div>
   );
