@@ -218,7 +218,7 @@ const CameraPage = () => {
               </div>
               <div className="info-details">
                 <p><strong>🎯 What is Random Capture?</strong></p>
-                <p>An advanced feature that automatically captures photos at unpredictable random intervals (1-6 seconds). This unique feature is not available in standard camera applications!</p>
+                <p>A feature that automatically captures photos at unpredictable random intervals (1-6 seconds). This unique feature is not available in standard camera applications!</p>
                 
                 <p><strong>⏱️ Timing:</strong> Photos are captured between 1 to 6 seconds randomly.</p>
                 
