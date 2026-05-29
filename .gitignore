@@ -26,3 +26,9 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Sensitive files
+public/error.txt
+public/*.pdf
+*.key
+*.pem
