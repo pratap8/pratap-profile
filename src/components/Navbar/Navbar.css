@@ -12,9 +12,31 @@
   z-index: 1000;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-pic {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #4a4ae0;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(74, 74, 224, 0.5);
+}
+
 .logo {
   color: #4a4ae0;
   font-weight: bold;
+  margin: 0;
 }
 
 .nav-links {
@@ -35,6 +57,23 @@
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  .logo-container {
+    gap: 10px;
+  }
+
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
   .nav-links {
     display: none;
   }
