@@ -10,7 +10,7 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="logo-container">
           <img 
-            src="/DP.JPEG" 
+            src="/DP.jpeg" 
             alt="Profile" 
             className="profile-pic"
             onClick={() => setIsPhotoOpen(true)}
