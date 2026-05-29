@@ -28,12 +28,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  width: 100%;
 }
 
 .resume-preview iframe {
   border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .resume-actions {
@@ -72,6 +74,14 @@
 
 .resume-btn.download:hover {
   background-color: #1f7f33;
+}
+
+.resume-btn.send-email {
+  background-color: #007bff;
+}
+
+.resume-btn.send-email:hover {
+  background-color: #0056b3;
 }
 
 /* Modal Styles */

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./Education.css";
 import ImagePopup from "./ImagePopup";
+import CertificatePopup from "./CertificatePopup";
 
 const Education = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showCertificatePopup, setShowCertificatePopup] = useState(false);
+  const [certificateData, setCertificateData] = useState(null);
 
   const educationData = [
     {
@@ -26,9 +29,9 @@ const Education = () => {
       achievements: [
         "Completed a paid internship at Roctool Engineers Pvt Ltd, gaining hands-on experience in practical engineering applications."
       ],
-      image: {
+      certificate: {
         src: "/Roctool.jpg",
-        alt: "Roctool Engineers Internship"
+        title: "Roctool Engineers Internship Certificate"
       }
     },
     {
@@ -74,6 +77,18 @@ const Education = () => {
                 <img src={edu.image.src} alt={edu.image.alt} />
               </div>
             )}
+
+            {edu.certificate && (
+              <button
+                className="view-certificate-btn"
+                onClick={() => {
+                  setCertificateData(edu.certificate);
+                  setShowCertificatePopup(true);
+                }}
+              >
+                View Certificate
+              </button>
+            )}
           </div>
         ))}
       </div>
@@ -82,6 +97,14 @@ const Education = () => {
       <ImagePopup
         selectedImage={selectedImage}
         onClose={() => setSelectedImage(null)}
+      />
+
+      {/* Certificate Popup */}
+      <CertificatePopup
+        showPopup={showCertificatePopup}
+        setShowPopup={setShowCertificatePopup}
+        certificateSrc={certificateData?.src}
+        certificateTitle={certificateData?.title}
       />
     </section>
   );

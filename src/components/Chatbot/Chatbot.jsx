@@ -48,7 +48,7 @@ function Chatbot() {
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <h4>AI Assistant</h4>
+            <h4>Pratap AI's Assistant</h4>
             <button onClick={() => setIsOpen(false)}>✖</button>
           </div>
 

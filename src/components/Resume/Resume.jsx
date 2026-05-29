@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Resume.css";
+import EmailModal from "./EmailModal";
 
 const Resume = () => {
   const [resumeFile, setResumeFile] = useState(null);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const defaultResumeUrl = `${process.env.PUBLIC_URL || ""}/PratapResume.pdf`;
 
   // Load any stored uploaded resume
@@ -24,6 +26,30 @@ const Resume = () => {
     document.body.removeChild(link);
   };
 
+  // Send resume via email
+  const handleSendEmail = async (data) => {
+    try {
+      // Use /api/send-resume which works for both localhost and Vercel
+      const response = await fetch("/api/send-resume", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send email");
+      }
+
+      return result;
+    } catch (err) {
+      throw new Error(err.message || "Error sending email");
+    }
+  };
+
   return (
     <section id="resume" className="resume-section">
       <div className="resume-container">
@@ -42,12 +68,27 @@ const Resume = () => {
               height="500px"
               style={{ border: "none" }}
             ></iframe>
-            <button className="resume-btn download" onClick={handleDownload}>
-              Download Resume
-            </button>
+            <div className="resume-actions">
+              <button className="resume-btn download" onClick={handleDownload}>
+                Download Resume
+              </button>
+              <button 
+                className="resume-btn send-email" 
+                onClick={() => setIsEmailModalOpen(true)}
+              >
+                Send to Email
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Email Modal */}
+      <EmailModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        onSend={handleSendEmail}
+      />
     </section>
   );
 };

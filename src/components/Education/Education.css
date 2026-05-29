@@ -117,6 +117,28 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+.view-certificate-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #4a4ae0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.view-certificate-btn:hover {
+  background: #3a3ac0;
+  transform: translateY(-2px);
+}
+
+.view-certificate-btn:active {
+  background: #2a2aa0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .education-section {
