@@ -1,0 +1,27 @@
+PS C:\Users\phool\React\pratap-profile> node server.cjs
+✅ Local API running at http://localhost:5000/api/chat
+📧 Using Gmail for production
+📧 Transporter configured
+📄 Resume path: C:\Users\phool\React\pratap-profile\public\PratapResume.pdf
+✅ Resume file found
+📬 Sending email to: phool8790@gmail.com
+❌ Email sending error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 41be03b00d2f7-c85772d9d35sm1508053a12.29 - gsmtp
+❌ Full error: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 41be03b00d2f7-c85772d9d35sm1508053a12.29 - gsmtp
+    at SMTPConnection._formatError (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:1588:34)
+    at SMTPConnection.<anonymous> (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:556:26)
+    at SMTPConnection._processResponse (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:993:20)
+    at SMTPConnection._onData (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:774:14)
+    at SMTPConnection._onSocketData (C:\Users\phool\React\pratap-profile\node_modules\nodemailer\lib\smtp-connection\index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) {
+  code: 'EAUTH',
+  response: '535-5.7.8 Username and Password not accepted. For more information, go to\n' +
+    '535 5.7.8  https://support.google.com/mail/?p=BadCredentials 41be03b00d2f7-c85772d9d35sm1508053a12.29 - gsmtp',
+  responseCode: 535,
+  command: 'AUTH PLAIN'
+}
