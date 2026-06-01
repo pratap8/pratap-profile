@@ -9,7 +9,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ProfilePage />} />
         <Route path="/camera" element={<CameraPage />} />
       </Routes>
       <Analytics />
