@@ -27,6 +27,9 @@ dist-ssr
 
 .vercel
 
+# Build folder should never be committed
+build/
+
 # Sensitive files
 public/error.txt
 public/*.pdf
