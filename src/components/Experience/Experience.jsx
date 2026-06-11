@@ -15,7 +15,7 @@ const Experience = () => {
       },
       positions: [
         {
-          position: "Analyst - Client: Verizon (US)",
+          position: "Software Engineer 1 - Client: Verizon (US)",
           duration: "Sep 2026 - Present",
           location: "Hyderabad, Telangana, India · Hybrid",
           achievements: [
@@ -26,7 +26,7 @@ const Experience = () => {
           ]
         },
         {
-          position: "Analyst - Client: Confidential",
+          position: "Software Engineer 1 - Client: Confidential",
           duration: "Jun 2026 - Sep 2026 · 4 mos",
           location: "Hyderabad, Telangana, India · Hybrid",
           achievements: [
