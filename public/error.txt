@@ -1,10 +1,12 @@
-Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
-Treating warnings as errors because process.env.CI = true.
-Most CI servers set it automatically.
-Failed to compile.
-[eslint] 
-src/components/Navbar/ProfilePhotoPopup.jsx
-  Line 11:9:  Redundant alt attribute. Screen-readers already announce `img` tags as an image. You don’t need to use the words `image`, `photo,` or `picture` (or any specified custom words) in the alt prop  jsx-a11y/img-redundant-alt
-Error: Command "npm run build" exited with 1
+BugReportModal.jsx:94 
+ POST http://localhost:3000/api/report-bug 404 (Not Found)
+(anonymous)	@	BugReportModal.jsx:94
+(anonymous)	@	BugReportModal.jsx:83
+
+BugReportModal.jsx:124 Error submitting report: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+(anonymous)	@	BugReportModal.jsx:124
+await in (anonymous)		
+(anonymous)	@	BugReportModal.jsx:83
+
+
+Error submitting report. Please try again.

@@ -288,6 +288,151 @@ app.post("/api/send-resume", async (req, res) => {
 });
 
 
+// ✅ Bug Report Endpoint
+app.post("/api/report-bug", async (req, res) => {
+  try {
+    const { name, email, description, attachment } = req.body;
+
+    console.log("📥 Received report:", { name, email, description: description?.substring(0, 50) });
+
+    // Validation
+    if (!description || description.trim().length === 0) {
+      return res.status(400).json({ error: "Description is required" });
+    }
+
+    if (description.length > 2000) {
+      return res.status(400).json({ error: "Description cannot exceed 2000 characters" });
+    }
+
+    // Email validation if provided
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Invalid email format" });
+      }
+    }
+
+    // Configure email transporter
+    let transporter;
+
+    if (!process.env.GMAIL_APP_PASSWORD) {
+      console.log("🧪 Using Ethereal for development email testing");
+      const testAccount = await nodemailer.createTestAccount();
+      transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+    } else {
+      console.log("📧 Using Gmail for production");
+      transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER || "phool8790@gmail.com",
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+      });
+    }
+
+    // Prepare attachments (base64 encoded from frontend)
+    const attachments = [];
+    if (attachment && attachment.data && attachment.filename) {
+      try {
+        // attachment.data is base64 string
+        const bufferData = Buffer.from(attachment.data, "base64");
+        attachments.push({
+          filename: attachment.filename,
+          content: bufferData,
+        });
+        console.log("📎 Attachment prepared:", attachment.filename);
+      } catch (e) {
+        console.error("⚠️ Error processing attachment:", e.message);
+        // Continue without attachment
+      }
+    }
+
+    // Email to admin
+    const adminMailOptions = {
+      from: '"Bug Report System" <noreply@pratap.com>',
+      to: "phool8790@gmail.com",
+      subject: "🐛 New Bug Report Submitted",
+      html: `
+        <h2>New Bug Report Received</h2>
+        <hr/>
+        <p><strong>Reporter Name:</strong> ${name || "Anonymous"}</p>
+        <p><strong>Reporter Email:</strong> ${email || "Not provided"}</p>
+        <hr/>
+        <h3>Description:</h3>
+        <p style="white-space: pre-wrap; word-wrap: break-word; background-color: #f5f5f5; padding: 12px; border-radius: 4px;">
+          ${description}
+        </p>
+        <hr/>
+        <p style="font-size: 12px; color: #999;">
+          Submitted on: ${new Date().toLocaleString()}
+        </p>
+      `,
+      attachments: attachments,
+    };
+
+    // Confirmation email to reporter (if email provided)
+    let confirmationMailOptions = null;
+    if (email) {
+      confirmationMailOptions = {
+        from: '"Pratap Portfolio" <noreply@pratap.com>',
+        to: email,
+        subject: "Thank You - Bug Report Received",
+        html: `
+          <h2>Thank You for Your Report</h2>
+          <p>Hi ${name || "there"},</p>
+          <p>We have received your bug report or sensitive information submission. Our team will review it shortly and take appropriate action.</p>
+          <hr/>
+          <h3>Your Report Summary:</h3>
+          <p style="white-space: pre-wrap; word-wrap: break-word; background-color: #f5f5f5; padding: 12px; border-radius: 4px;">
+            ${description}
+          </p>
+          <hr/>
+          <p>If you have any urgent concerns, please feel free to reach out directly.</p>
+          <br/>
+          <p>Best Regards,</p>
+          <p><strong>Phool Babu Raj Pratap Singh</strong></p>
+          <p>📧 phool8790@gmail.com</p>
+          <p>📱 +91-8790565427</p>
+        `,
+      };
+    }
+
+    // Send admin email
+    console.log("📬 Sending bug report to admin...");
+    const adminInfo = await transporter.sendMail(adminMailOptions);
+    console.log("✅ Admin notification sent:", adminInfo.messageId);
+
+    // Send confirmation email if email provided
+    if (confirmationMailOptions) {
+      console.log("📬 Sending confirmation email to reporter...");
+      const confirmInfo = await transporter.sendMail(confirmationMailOptions);
+      console.log("✅ Confirmation email sent:", confirmInfo.messageId);
+    }
+
+    res.json({
+      success: true,
+      message: "Thank you for your report! We have received it and will review it shortly.",
+    });
+  } catch (err) {
+    console.error("❌ Bug report error:", err.message);
+    console.error("❌ Full error stack:", err.stack);
+
+    res.status(500).json({
+      error: "Failed to submit report. Please try again later.",
+      details: err.message,
+    });
+  }
+});
+
+
 // ✅ Start local server
 const PORT = 5000;
 app.listen(PORT, () =>

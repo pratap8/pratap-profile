@@ -1,7 +1,4 @@
 const nodemailer = require("nodemailer");
-const formidable = require("formidable");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = async function handler(req, res) {
   // Set CORS headers
@@ -20,19 +17,17 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Parse form data with file upload
-    const form = formidable({
-      maxFileSize: 5 * 1024 * 1024, // 5MB limit
-      maxFields: 10,
-    });
+    // Parse JSON body
+    let body = req.body;
+    
+    // If body is a string, parse it
+    if (typeof body === "string") {
+      body = JSON.parse(body);
+    }
 
-    const [fields, files] = await form.parse(req);
+    const { name, email, description, attachment } = body;
 
-    // Extract fields (formidable returns arrays)
-    const name = fields.name?.[0] || "";
-    const email = fields.email?.[0] || "";
-    const description = fields.description?.[0] || "";
-    const attachmentFile = files.attachment?.[0];
+    console.log("📥 Received report:", { name, email, description: description?.substring(0, 50) });
 
     // Validation
     if (!description || description.trim().length === 0) {
@@ -53,6 +48,8 @@ module.exports = async function handler(req, res) {
 
     // Configure email transporter
     let transporter;
+
+    console.log("🔑 GMAIL_APP_PASSWORD exists:", !!process.env.GMAIL_APP_PASSWORD);
 
     if (!process.env.GMAIL_APP_PASSWORD) {
       console.log("🧪 Using Ethereal for development email testing");
@@ -77,14 +74,21 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Prepare attachments
+    // Prepare attachments (base64 encoded from frontend)
     const attachments = [];
-    if (attachmentFile) {
-      const fileBuffer = fs.readFileSync(attachmentFile.filepath);
-      attachments.push({
-        filename: attachmentFile.originalFilename,
-        content: fileBuffer,
-      });
+    if (attachment && attachment.data && attachment.filename) {
+      try {
+        // attachment.data is base64 string
+        const bufferData = Buffer.from(attachment.data, "base64");
+        attachments.push({
+          filename: attachment.filename,
+          content: bufferData,
+        });
+        console.log("📎 Attachment prepared:", attachment.filename);
+      } catch (e) {
+        console.error("⚠️ Error processing attachment:", e.message);
+        // Continue without attachment
+      }
     }
 
     // Email to admin
@@ -139,23 +143,14 @@ module.exports = async function handler(req, res) {
 
     // Send admin email
     console.log("📬 Sending bug report to admin...");
-    await transporter.sendMail(adminMailOptions);
-    console.log("✅ Admin notification sent");
+    const adminInfo = await transporter.sendMail(adminMailOptions);
+    console.log("✅ Admin notification sent:", adminInfo.messageId);
 
     // Send confirmation email if email provided
     if (confirmationMailOptions) {
       console.log("📬 Sending confirmation email to reporter...");
-      await transporter.sendMail(confirmationMailOptions);
-      console.log("✅ Confirmation email sent");
-    }
-
-    // Clean up uploaded file
-    if (attachmentFile) {
-      try {
-        fs.unlinkSync(attachmentFile.filepath);
-      } catch (e) {
-        console.error("Error deleting temp file:", e);
-      }
+      const confirmInfo = await transporter.sendMail(confirmationMailOptions);
+      console.log("✅ Confirmation email sent:", confirmInfo.messageId);
     }
 
     res.status(200).json({
@@ -164,11 +159,11 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     console.error("❌ Bug report error:", err.message);
-    console.error("❌ Full error:", err);
+    console.error("❌ Full error stack:", err.stack);
 
     res.status(500).json({
       error: "Failed to submit report. Please try again later.",
-      details: err.message,
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
     });
   }
 };

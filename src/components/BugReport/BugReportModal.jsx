@@ -52,17 +52,51 @@ const BugReportModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("description", formData.description);
-      if (formData.attachment) {
-        formDataToSend.append("attachment", formData.attachment);
-      }
+      // Prepare data to send
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        description: formData.description,
+        attachment: null,
+      };
 
+      // Convert file to base64 if exists
+      if (formData.attachment) {
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            const base64String = reader.result.split(",")[1]; // Remove "data:...;base64," prefix
+            dataToSend.attachment = {
+              filename: formData.attachment.name,
+              data: base64String,
+            };
+
+            await sendReport(dataToSend);
+          } catch (error) {
+            console.error("Error processing file:", error);
+            setMessage("Error processing attachment. Please try again.");
+            setLoading(false);
+          }
+        };
+        reader.readAsDataURL(formData.attachment);
+      } else {
+        await sendReport(dataToSend);
+      }
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      setMessage("Error submitting report. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const sendReport = async (dataToSend) => {
+    try {
       const response = await fetch("/api/report-bug", {
         method: "POST",
-        body: formDataToSend,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
       });
 
       const data = await response.json();
