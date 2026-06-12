@@ -1,0 +1,92 @@
+.bug-report-stripe {
+  background: linear-gradient(135deg, #ff8c00 0%, #ff6f00 100%);
+  padding: 16px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 -2px 8px rgba(255, 140, 0, 0.2);
+  margin-top: 40px;
+}
+
+.bug-report-stripe:hover {
+  padding: 18px 24px;
+  box-shadow: 0 -4px 16px rgba(255, 140, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.stripe-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stripe-icon {
+  font-size: 20px;
+  display: inline-block;
+}
+
+.stripe-text {
+  flex: 1;
+  text-align: center;
+}
+
+.stripe-arrow {
+  font-size: 18px;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.bug-report-stripe:hover .stripe-arrow {
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bug-report-stripe {
+    padding: 12px 16px;
+  }
+
+  .stripe-content {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .stripe-icon {
+    font-size: 18px;
+  }
+
+  .stripe-arrow {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bug-report-stripe {
+    padding: 10px 12px;
+  }
+
+  .stripe-content {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .stripe-icon {
+    font-size: 16px;
+  }
+
+  .stripe-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stripe-arrow {
+    font-size: 14px;
+  }
+}

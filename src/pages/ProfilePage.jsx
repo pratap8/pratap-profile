@@ -12,6 +12,7 @@ import HonorsAwards from "../components/HonorsAwards";
 import Education from "../components/Education";
 import Chatbot from "../components/Chatbot";
 import Footer from "../components/Footer";
+import BugReport from "../components/BugReport";
 
 const ProfilePage = () => {
   return (
@@ -28,6 +29,7 @@ const ProfilePage = () => {
       <Skills />
       <Contact />
       <Footer />
+      <BugReport />
       <Chatbot />
     </div>
   );

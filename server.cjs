@@ -288,6 +288,171 @@ app.post("/api/send-resume", async (req, res) => {
 });
 
 
+// ✅ Bug Report Endpoint
+const multer = require("multer");
+const upload = multer({ 
+  dest: path.join(__dirname, "temp"),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
+
+app.post("/api/report-bug", upload.single("attachment"), async (req, res) => {
+  const { name, email, description } = req.body;
+
+  // Validation
+  if (!description || description.trim().length === 0) {
+    // Clean up uploaded file if exists
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    return res.status(400).json({ error: "Description is required" });
+  }
+
+  if (description.length > 2000) {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    return res.status(400).json({ error: "Description cannot exceed 2000 characters" });
+  }
+
+  // Email validation if provided
+  if (email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
+      return res.status(400).json({ error: "Invalid email format" });
+    }
+  }
+
+  try {
+    let transporter;
+
+    // For development: Use Ethereal (test email service)
+    if (!process.env.GMAIL_APP_PASSWORD) {
+      console.log("🧪 Using Ethereal for development email testing");
+      const testAccount = await nodemailer.createTestAccount();
+      transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+    } else {
+      // For production: Use Gmail with app password
+      console.log("📧 Using Gmail for production");
+      transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER || "phool8790@gmail.com",
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+      });
+    }
+
+    const attachments = [];
+    if (req.file) {
+      attachments.push({
+        filename: req.file.originalname,
+        path: req.file.path,
+      });
+    }
+
+    // Email to admin
+    const adminMailOptions = {
+      from: '"Bug Report System" <noreply@pratap.com>',
+      to: "phool8790@gmail.com",
+      subject: "🐛 New Bug Report Submitted",
+      html: `
+        <h2>New Bug Report Received</h2>
+        <hr/>
+        <p><strong>Reporter Name:</strong> ${name || "Anonymous"}</p>
+        <p><strong>Reporter Email:</strong> ${email || "Not provided"}</p>
+        <hr/>
+        <h3>Description:</h3>
+        <p style="white-space: pre-wrap; word-wrap: break-word; background-color: #f5f5f5; padding: 12px; border-radius: 4px;">
+          ${description}
+        </p>
+        <hr/>
+        <p style="font-size: 12px; color: #999;">
+          Submitted on: ${new Date().toLocaleString()}
+        </p>
+      `,
+      attachments: attachments,
+    };
+
+    // Confirmation email to reporter (if email provided)
+    let confirmationMailOptions = null;
+    if (email) {
+      confirmationMailOptions = {
+        from: '"Pratap Portfolio" <noreply@pratap.com>',
+        to: email,
+        subject: "Thank You - Bug Report Received",
+        html: `
+          <h2>Thank You for Your Report</h2>
+          <p>Hi ${name || "there"},</p>
+          <p>We have received your bug report or sensitive information submission. Our team will review it shortly and take appropriate action.</p>
+          <hr/>
+          <h3>Your Report Summary:</h3>
+          <p style="white-space: pre-wrap; word-wrap: break-word; background-color: #f5f5f5; padding: 12px; border-radius: 4px;">
+            ${description}
+          </p>
+          <hr/>
+          <p>If you have any urgent concerns, please feel free to reach out directly.</p>
+          <br/>
+          <p>Best Regards,</p>
+          <p><strong>Phool Babu Raj Pratap Singh</strong></p>
+          <p>📧 phool8790@gmail.com</p>
+          <p>📱 +91-8790565427</p>
+        `,
+      };
+    }
+
+    // Send admin email
+    console.log("📬 Sending bug report to admin...");
+    await transporter.sendMail(adminMailOptions);
+    console.log("✅ Admin notification sent");
+
+    // Send confirmation email if email provided
+    if (confirmationMailOptions) {
+      console.log("📬 Sending confirmation email to reporter...");
+      await transporter.sendMail(confirmationMailOptions);
+      console.log("✅ Confirmation email sent");
+    }
+
+    // Clean up uploaded file
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    res.json({ 
+      success: true, 
+      message: "Thank you for your report! We have received it and will review it shortly." 
+    });
+  } catch (err) {
+    console.error("❌ Bug report error:", err.message);
+    console.error("❌ Full error:", err);
+
+    // Clean up uploaded file on error
+    if (req.file) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (e) {
+        console.error("Error deleting temp file:", e);
+      }
+    }
+
+    res.status(500).json({ 
+      error: "Failed to submit report. Please try again later.",
+      details: err.message 
+    });
+  }
+});
+
+
 // ✅ Start local server
 const PORT = 5000;
 app.listen(PORT, () =>
