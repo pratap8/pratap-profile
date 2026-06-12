@@ -114,44 +114,10 @@ module.exports = async function handler(req, res) {
       attachments: attachments,
     };
 
-    // Confirmation email to reporter (if email provided)
-    let confirmationMailOptions = null;
-    if (email) {
-      confirmationMailOptions = {
-        from: '"Pratap Portfolio" <noreply@pratap.com>',
-        to: email,
-        subject: "Thank You - Bug Report Received",
-        html: `
-          <h2>Thank You for Your Report</h2>
-          <p>Hi ${name || "there"},</p>
-          <p>We have received your bug report or sensitive information submission. Our team will review it shortly and take appropriate action.</p>
-          <hr/>
-          <h3>Your Report Summary:</h3>
-          <p style="white-space: pre-wrap; word-wrap: break-word; background-color: #f5f5f5; padding: 12px; border-radius: 4px;">
-            ${description}
-          </p>
-          <hr/>
-          <p>If you have any urgent concerns, please feel free to reach out directly.</p>
-          <br/>
-          <p>Best Regards,</p>
-          <p><strong>Phool Babu Raj Pratap Singh</strong></p>
-          <p>📧 phool8790@gmail.com</p>
-          <p>📱 +91-8790565427</p>
-        `,
-      };
-    }
-
     // Send admin email
     console.log("📬 Sending bug report to admin...");
     const adminInfo = await transporter.sendMail(adminMailOptions);
     console.log("✅ Admin notification sent:", adminInfo.messageId);
-
-    // Send confirmation email if email provided
-    if (confirmationMailOptions) {
-      console.log("📬 Sending confirmation email to reporter...");
-      const confirmInfo = await transporter.sendMail(confirmationMailOptions);
-      console.log("✅ Confirmation email sent:", confirmInfo.messageId);
-    }
 
     res.status(200).json({
       success: true,
