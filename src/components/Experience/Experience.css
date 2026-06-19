@@ -204,6 +204,13 @@
   box-shadow: 0 6px 12px rgba(74, 74, 224, 0.3);
 }
 
+.pdf-buttons-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .experience-section {

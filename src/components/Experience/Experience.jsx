@@ -9,10 +9,18 @@ const Experience = () => {
     {
       company: "Deloitte",
       isCompanyHeader: true,
-      pdf: {
-        src: "/Spot Award.pdf",
-        alt: "Spot Award"
-      },
+      pdfs: [
+        {
+          src: "/Spot Award.pdf",
+          alt: "Spot Award",
+          label: "Spot Award"
+        },
+        {
+          src: "/High Five.pdf",
+          alt: "High Five",
+          label: "High Five"
+        }
+      ],
       positions: [
         {
           position: "Software Engineer 1 - Client: Verizon (US)",
@@ -108,13 +116,18 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {exp.pdf && (
-                  <div
-                    className="pdf-preview-button"
-                    onClick={() => setSelectedPDF(exp.pdf)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    📄 View Award Certificate
+                {exp.pdfs && (
+                  <div className="pdf-buttons-container">
+                    {exp.pdfs.map((pdf, idx) => (
+                      <div
+                        key={idx}
+                        className="pdf-preview-button"
+                        onClick={() => setSelectedPDF(pdf)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        📄 {pdf.label}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
