@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SendFilesModal from "../SendFiles/SendFilesModal";
 import "./Footer.css";
 
 const Footer = () => {
   const navigate = useNavigate();
-
-  
+  const [isSendFilesOpen, setIsSendFilesOpen] = useState(false);
 
   const handleCameraClick = () => {
     navigate("/camera");
@@ -14,8 +14,6 @@ const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="footer-buttons">
-      
-
         <button className="footer-btn camera-btn" onClick={handleCameraClick}>
           <svg
             width="20"
@@ -32,7 +30,32 @@ const Footer = () => {
           </svg>
           Random Camera
         </button>
+
+        <button
+          className="footer-btn pratap-btn"
+          onClick={() => setIsSendFilesOpen(true)}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16" />
+            <path d="M9 4v16" />
+          </svg>
+          Send Files
+        </button>
       </div>
+
+      <SendFilesModal
+        isOpen={isSendFilesOpen}
+        onClose={() => setIsSendFilesOpen(false)}
+      />
     </footer>
   );
 };
