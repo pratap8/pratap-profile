@@ -11,6 +11,7 @@ const SendFilesModal = ({ isOpen, onClose }) => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+  const folderInputRef = useRef(null);
 
   if (!isOpen) return null;
 
@@ -21,6 +22,7 @@ const SendFilesModal = ({ isOpen, onClose }) => {
     setMessage("");
     setStatus("");
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (folderInputRef.current) folderInputRef.current.value = "";
   };
 
   const closeModal = () => {
@@ -28,11 +30,11 @@ const SendFilesModal = ({ isOpen, onClose }) => {
     resetForm();
   };
 
-  const mergeFiles = (incomingFiles) => {
-    const newItems = Array.from(incomingFiles).map((file) => ({
-      file,
-      relativePath: file.webkitRelativePath || file.name,
-      contentType: file.type || "application/octet-stream",
+  const appendFiles = (incomingFiles) => {
+    const newItems = incomingFiles.map((item) => ({
+      file: item.file || item,
+      relativePath: item.relativePath || item.file?.webkitRelativePath || item.file?.name || item.name,
+      contentType: item.contentType || item.file?.type || "application/octet-stream",
     }));
 
     const merged = [...selectedFiles, ...newItems];
@@ -49,9 +51,67 @@ const SendFilesModal = ({ isOpen, onClose }) => {
     setSelectedFiles(unique);
   };
 
+  const mergeFiles = (incomingFiles) => {
+    const normalizedFiles = Array.from(incomingFiles).map((file) => ({
+      file,
+      relativePath: file.webkitRelativePath || file.name,
+      contentType: file.type || "application/octet-stream",
+    }));
+
+    appendFiles(normalizedFiles);
+  };
+
   const handleFileChange = (event) => {
     if (event.target.files?.length) {
       mergeFiles(event.target.files);
+    }
+  };
+
+  const collectFilesFromEntry = async (entry, basePath = "") => {
+    const collected = [];
+
+    if (entry.kind === "file") {
+      const file = await entry.getFile();
+      collected.push({
+        file,
+        relativePath: basePath ? `${basePath}/${file.name}` : file.name,
+      });
+      return collected;
+    }
+
+    if (entry.kind === "directory") {
+      for await (const child of entry.values()) {
+        const childPath = basePath ? `${basePath}/${child.name}` : child.name;
+        collected.push(...(await collectFilesFromEntry(child, childPath)));
+      }
+    }
+
+    return collected;
+  };
+
+  const openFilePicker = () => {
+    fileInputRef.current?.click();
+  };
+
+  const openFolderPicker = async () => {
+    if (typeof window === "undefined" || !window.showDirectoryPicker) {
+      folderInputRef.current?.click();
+      return;
+    }
+
+    try {
+      const directoryHandle = await window.showDirectoryPicker();
+      const pickedFiles = [];
+
+      for await (const entry of directoryHandle.values()) {
+        pickedFiles.push(...(await collectFilesFromEntry(entry)));
+      }
+
+      appendFiles(pickedFiles);
+    } catch (error) {
+      if (error?.name !== "AbortError") {
+        console.error("Folder picker error:", error);
+      }
     }
   };
 
@@ -129,6 +189,7 @@ const SendFilesModal = ({ isOpen, onClose }) => {
   const clearSelectedFiles = () => {
     setSelectedFiles([]);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (folderInputRef.current) folderInputRef.current.value = "";
   };
 
   return (
@@ -166,7 +227,15 @@ const SendFilesModal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="sendFilesInput">Browse Documents or Select Folder</label>
+            <label>Browse Documents or Select Folder</label>
+            <div className="upload-picker-actions">
+              <button type="button" className="upload-picker-btn" onClick={openFilePicker} disabled={loading}>
+                Browse Files
+              </button>
+              <button type="button" className="upload-picker-btn" onClick={openFolderPicker} disabled={loading}>
+                Select Folder
+              </button>
+            </div>
             <input
               id="sendFilesInput"
               type="file"
@@ -174,9 +243,19 @@ const SendFilesModal = ({ isOpen, onClose }) => {
               onChange={handleFileChange}
               multiple
               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.xlsx,.xls"
+              disabled={loading}
+              style={{ display: "none" }}
+            />
+            <input
+              id="sendFilesFolderInput"
+              type="file"
+              ref={folderInputRef}
+              onChange={handleFileChange}
+              multiple
               webkitdirectory="true"
               directory="true"
               disabled={loading}
+              style={{ display: "none" }}
             />
           </div>
 

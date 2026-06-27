@@ -73,6 +73,31 @@
   font-size: 0.95rem;
 }
 
+.upload-picker-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.upload-picker-btn {
+  padding: 10px 14px;
+  border: 1px solid #5c7cfa;
+  border-radius: 10px;
+  background: #f4f7ff;
+  color: #3551c7;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-picker-btn:hover:not(:disabled) {
+  background: #e8eeff;
+}
+
+.upload-picker-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="file"] {

@@ -78,7 +78,6 @@ module.exports = async function handler(req, res) {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Recipient:</strong> ${recipientEmail}</p>
         <p><strong>Sent at:</strong> ${new Date().toLocaleString()}</p>
-        <p>If the sender provided an email address, it was: ${email || "Not provided"}</p>
       `,
       attachments: preparedAttachments,
     };
