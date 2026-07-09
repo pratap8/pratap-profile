@@ -11,6 +11,7 @@ import Publications from "../components/Publications";
 import HonorsAwards from "../components/HonorsAwards";
 import Education from "../components/Education";
 import Chatbot from "../components/Chatbot";
+import FeedbackSuggestion from "../components/FeedbackSuggestion";
 import Footer from "../components/Footer";
 import BugReport from "../components/BugReport";
 
@@ -31,6 +32,7 @@ const ProfilePage = () => {
       <Footer />
       <BugReport />
       <Chatbot />
+      <FeedbackSuggestion />
     </div>
   );
 };

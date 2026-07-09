@@ -399,6 +399,68 @@ app.post("/api/report-bug", async (req, res) => {
 });
 
 
+app.post("/api/send-feedback", async (req, res) => {
+  try {
+    const { message } = req.body || {};
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ error: "Message is required" });
+    }
+
+    let transporter;
+
+    if (!process.env.GMAIL_APP_PASSWORD) {
+      const testAccount = await nodemailer.createTestAccount();
+      transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+    } else {
+      transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER || "phool8790@gmail.com",
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+      });
+    }
+
+    const mailOptions = {
+      from: '"Feedback / Suggestion" <noreply@pratap.com>',
+      to: "phool8790@gmail.com",
+      subject: "New Feedback / Suggestion",
+      html: `
+        <h2>New Feedback / Suggestion</h2>
+        <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
+        <div style="white-space: pre-wrap; background: #f7f7f7; padding: 12px; border-radius: 6px;">
+          ${String(message).replace(/\n/g, "<br/>")}
+        </div>
+      `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+
+    const response = {
+      success: true,
+      message: "Thanks! Your suggestion has been sent.",
+    };
+
+    if (!process.env.GMAIL_APP_PASSWORD) {
+      response.previewUrl = nodemailer.getTestMessageUrl(info);
+    }
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error("❌ Feedback sending error:", err);
+    return res.status(500).json({ error: "Failed to send feedback. Please try again later." });
+  }
+});
+
 // ✅ Start local server
 const PORT = 5000;
 app.listen(PORT, () =>
