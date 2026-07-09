@@ -3,6 +3,7 @@ import "./FeedbackSuggestion.css";
 
 function FeedbackSuggestion() {
   const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,17 @@ function FeedbackSuggestion() {
 
   const handleSend = async () => {
     const trimmed = message.trim();
+    const trimmedName = name.trim();
+
     if (!trimmed) return;
+    if (trimmedName.length > 30) {
+      setError("Name cannot exceed 30 characters.");
+      return;
+    }
+    if (trimmed.length > 500) {
+      setError("Message cannot exceed 500 characters.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -28,7 +39,7 @@ function FeedbackSuggestion() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: trimmed }),
+        body: JSON.stringify({ name: trimmedName, message: trimmed }),
       });
 
       const result = await response.json();
@@ -48,6 +59,7 @@ function FeedbackSuggestion() {
 
   const resetState = () => {
     setSubmitted(false);
+    setName("");
     setMessage("");
     setError("");
   };
@@ -91,13 +103,24 @@ function FeedbackSuggestion() {
                 <p className="feedback-intro">
                   Share your ideas or suggestions with me.
                 </p>
+                <input
+                  type="text"
+                  className="feedback-name-input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value.slice(0, 30))}
+                  placeholder="Your name (optional)"
+                  maxLength={30}
+                />
+                <div className="feedback-counter">Name: {name.length}/30</div>
                 <textarea
                   ref={textareaRef}
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => setMessage(e.target.value.slice(0, 500))}
                   placeholder="Share your suggestion..."
                   rows={5}
+                  maxLength={500}
                 />
+                <div className="feedback-counter">Message: {message.length}/500</div>
                 {error && <p className="feedback-error">{error}</p>}
                 <button
                   type="button"

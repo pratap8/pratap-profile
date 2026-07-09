@@ -401,7 +401,7 @@ app.post("/api/report-bug", async (req, res) => {
 
 app.post("/api/send-feedback", async (req, res) => {
   try {
-    const { message } = req.body || {};
+    const { name, message } = req.body || {};
 
     if (!message || !message.trim()) {
       return res.status(400).json({ error: "Message is required" });
@@ -436,6 +436,7 @@ app.post("/api/send-feedback", async (req, res) => {
       subject: "New Feedback / Suggestion",
       html: `
         <h2>New Feedback / Suggestion</h2>
+        <p><strong>Name:</strong> ${name && name.trim() ? name.trim() : "Not provided"}</p>
         <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
         <div style="white-space: pre-wrap; background: #f7f7f7; padding: 12px; border-radius: 6px;">
           ${String(message).replace(/\n/g, "<br/>")}
