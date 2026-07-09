@@ -30,6 +30,7 @@ module.exports = async function handler(req, res) {
       body = JSON.parse(body);
     }
 
+    const name = body?.name?.trim();
     const message = body?.message?.trim();
 
     if (!message) {
@@ -65,6 +66,7 @@ module.exports = async function handler(req, res) {
       subject: "New Feedback / Suggestion",
       html: `
         <h2>New Feedback / Suggestion</h2>
+        <p><strong>Name:</strong> ${name || "Not provided"}</p>
         <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
         <div style="white-space: pre-wrap; background: #f7f7f7; padding: 12px; border-radius: 6px;">
           ${escapeHtml(message)}
