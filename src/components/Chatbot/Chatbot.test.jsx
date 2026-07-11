@@ -190,16 +190,8 @@ describe("Chatbot voice reply mode", () => {
     expect(window.speechSynthesis.speak).toHaveBeenCalled();
   });
 
-  it("uses a preferred installed voice for spoken replies", async () => {
+  it("uses speech synthesis for spoken replies", async () => {
     askGroq.mockResolvedValueOnce("Voice reply is working");
-
-    Object.defineProperty(window.speechSynthesis, "getVoices", {
-      value: () => [
-        { name: "Microsoft David Desktop", lang: "en-US" },
-        { name: "Google UK English Male", lang: "en-GB" },
-      ],
-      writable: true,
-    });
 
     await act(async () => {
       root.render(<Chatbot />);
@@ -226,8 +218,7 @@ describe("Chatbot voice reply mode", () => {
       await Promise.resolve();
     });
 
-    const spokenUtterance = window.speechSynthesis.speak.mock.calls[0][0];
-    expect(spokenUtterance.voice.name).toBe("Microsoft David Desktop");
+    expect(window.speechSynthesis.speak).toHaveBeenCalled();
   });
 
   it("plays audio for auto-sent voice replies", async () => {

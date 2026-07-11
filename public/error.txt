@@ -1,7 +1,27 @@
-Uncaught runtime errors:
-×
-ERROR
-Failed to execute 'start' on 'SpeechRecognition': recognition has already started.
-InvalidStateError: Failed to execute 'start' on 'SpeechRecognition': recognition has already started.
-    at http://localhost:3000/static/js/bundle.js:53362:40
-    at <anonymous>
+01:28:54.105 
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+01:28:54.848 
+Browserslist: browsers data (caniuse-lite) is 8 months old. Please run:
+01:28:54.849 
+  npx update-browserslist-db@latest
+01:28:54.849 
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+01:28:55.165 
+01:28:55.166 
+Treating warnings as errors because process.env.CI = true.
+01:28:55.166 
+Most CI servers set it automatically.
+01:28:55.166 
+01:28:55.166 
+Failed to compile.
+01:28:55.166 
+01:28:55.167 
+[eslint] 
+01:28:55.167 
+src/components/Chatbot/Chatbot.jsx
+01:28:55.168 
+  Line 125:6:  React Hook useEffect has a missing dependency: 'sendTextMessage'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+01:28:55.168 
+01:28:55.168 
+01:28:55.232 
+Error: Command "npm run build" exited with 1

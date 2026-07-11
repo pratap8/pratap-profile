@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import "./Chatbot.css";
 import { askGroq } from "../../services/groqService";
 
@@ -27,6 +27,98 @@ function Chatbot() {
   useEffect(() => {
     replyModeRef.current = replyMode;
   }, [replyMode]);
+
+  const stopSpeaking = useCallback(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume?.();
+    }
+    speechUtteranceRef.current = null;
+  }, []);
+
+  const resetVoiceInputState = useCallback(() => {
+    pendingTranscriptRef.current = "";
+    setInput("");
+    if (silenceTimerRef.current) {
+      window.clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+  }, []);
+
+  const warmUpSpeech = useCallback(() => {
+    if (replyModeRef.current !== "voice" || typeof window === "undefined" || !window.speechSynthesis) {
+      return;
+    }
+
+    const utteranceCtor =
+      window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+
+    if (!utteranceCtor) {
+      return;
+    }
+
+    try {
+      stopSpeaking();
+      const utterance = new utteranceCtor("Ready");
+      utterance.lang = "en-US";
+      utterance.volume = 0.01;
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error("Speech synthesis warmup error:", error);
+    }
+  }, [stopSpeaking]);
+
+  const speakReply = useCallback((text) => {
+    if (replyModeRef.current !== "voice" || typeof window === "undefined" || !window.speechSynthesis) {
+      return;
+    }
+
+    const utteranceCtor =
+      window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+
+    if (!utteranceCtor) {
+      return;
+    }
+
+    try {
+      stopSpeaking();
+      const utterance = new utteranceCtor(text);
+      utterance.lang = "en-US";
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      speechUtteranceRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error("Speech synthesis error:", error);
+    }
+  }, [stopSpeaking]);
+
+  const sendTextMessage = useCallback(async (message) => {
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage) return;
+
+    setMessages((prev) => [...prev, { from: "user", text: trimmedMessage }]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const reply = await askGroq(trimmedMessage);
+      setMessages((prev) => [...prev, { from: "bot", text: reply }]);
+
+      if (replyModeRef.current === "voice") {
+        speakReply(reply);
+      }
+    } catch (err) {
+      console.error("Chatbot error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: "⚠️ Error: Unable to reach the AI service." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }, [speakReply]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -122,7 +214,7 @@ function Chatbot() {
       }
       recognition.stop();
     };
-  }, []);
+  }, [sendTextMessage, stopSpeaking]);
 
   useEffect(() => {
     return () => {
@@ -131,98 +223,6 @@ function Chatbot() {
       }
     };
   }, []);
-
-  const stopSpeaking = () => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume?.();
-    }
-    speechUtteranceRef.current = null;
-  };
-
-  const resetVoiceInputState = () => {
-    pendingTranscriptRef.current = "";
-    setInput("");
-    if (silenceTimerRef.current) {
-      window.clearTimeout(silenceTimerRef.current);
-      silenceTimerRef.current = null;
-    }
-  };
-
-  const warmUpSpeech = () => {
-    if (replyModeRef.current !== "voice" || typeof window === "undefined" || !window.speechSynthesis) {
-      return;
-    }
-
-    const utteranceCtor =
-      window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
-
-    if (!utteranceCtor) {
-      return;
-    }
-
-    try {
-      stopSpeaking();
-      const utterance = new utteranceCtor("Ready");
-      utterance.lang = "en-US";
-      utterance.volume = 0.01;
-      window.speechSynthesis.speak(utterance);
-    } catch (error) {
-      console.error("Speech synthesis warmup error:", error);
-    }
-  };
-
-  const speakReply = (text) => {
-    if (replyModeRef.current !== "voice" || typeof window === "undefined" || !window.speechSynthesis) {
-      return;
-    }
-
-    const utteranceCtor =
-      window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
-
-    if (!utteranceCtor) {
-      return;
-    }
-
-    try {
-      stopSpeaking();
-      const utterance = new utteranceCtor(text);
-      utterance.lang = "en-US";
-      utterance.rate = 1;
-      utterance.pitch = 1;
-      utterance.volume = 1;
-      speechUtteranceRef.current = utterance;
-      window.speechSynthesis.speak(utterance);
-    } catch (error) {
-      console.error("Speech synthesis error:", error);
-    }
-  };
-
-  const sendTextMessage = async (message) => {
-    const trimmedMessage = message.trim();
-    if (!trimmedMessage) return;
-
-    setMessages((prev) => [...prev, { from: "user", text: trimmedMessage }]);
-    setInput("");
-    setLoading(true);
-
-    try {
-      const reply = await askGroq(trimmedMessage);
-      setMessages((prev) => [...prev, { from: "bot", text: reply }]);
-
-      if (replyModeRef.current === "voice") {
-        speakReply(reply);
-      }
-    } catch (err) {
-      console.error("Chatbot error:", err);
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: "⚠️ Error: Unable to reach the AI service." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const startVoiceInput = () => {
     if (!recognitionRef.current) {
