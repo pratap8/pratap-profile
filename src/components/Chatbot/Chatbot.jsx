@@ -9,6 +9,7 @@ function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [replyMode, setReplyMode] = useState("text");
   const [isListening, setIsListening] = useState(false);
+  const [voiceSupportStatus, setVoiceSupportStatus] = useState("");
   const bodyRef = useRef(null);
   const recognitionRef = useRef(null);
   const pendingTranscriptRef = useRef("");
@@ -27,6 +28,25 @@ function Chatbot() {
   useEffect(() => {
     replyModeRef.current = replyMode;
   }, [replyMode]);
+
+  useEffect(() => {
+    const speechRecognitionSupported =
+      typeof window !== "undefined" &&
+      Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
+    const speechSynthesisSupported =
+      typeof window !== "undefined" &&
+      Boolean(
+        window.speechSynthesis ||
+          window.SpeechSynthesisUtterance ||
+          window.webkitSpeechSynthesisUtterance
+      );
+
+    if (!speechRecognitionSupported || !speechSynthesisSupported) {
+      setVoiceSupportStatus("Voice features are unavailable in this browser.");
+    } else {
+      setVoiceSupportStatus("");
+    }
+  }, []);
 
   const stopSpeaking = useCallback(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
@@ -106,7 +126,7 @@ function Chatbot() {
       const reply = await askGroq(trimmedMessage);
       setMessages((prev) => [...prev, { from: "bot", text: reply }]);
 
-      if (replyModeRef.current === "voice") {
+      if (replyMode === "voice") {
         speakReply(reply);
       }
     } catch (err) {
@@ -118,7 +138,7 @@ function Chatbot() {
     } finally {
       setLoading(false);
     }
-  }, [speakReply]);
+  }, [replyMode, speakReply]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -251,7 +271,7 @@ function Chatbot() {
     const message = input.trim();
     if (!message) return;
 
-    if (replyModeRef.current === "voice") {
+    if (replyMode === "voice") {
       warmUpSpeech();
     }
 
@@ -303,6 +323,10 @@ function Chatbot() {
               {isListening ? "🔴" : "🎙️"}
             </button>
           </div>
+
+          {voiceSupportStatus && (
+            <div className="chatbot-status">{voiceSupportStatus}</div>
+          )}
 
           <div className="chatbot-body" ref={bodyRef}>
             {messages.length === 0 && (
