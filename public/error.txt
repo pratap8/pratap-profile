@@ -1,12 +1,7 @@
-BugReportModal.jsx:94 
- POST http://localhost:3000/api/report-bug 404 (Not Found)
-(anonymous)	@	BugReportModal.jsx:94
-(anonymous)	@	BugReportModal.jsx:83
-
-BugReportModal.jsx:124 Error submitting report: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
-(anonymous)	@	BugReportModal.jsx:124
-await in (anonymous)		
-(anonymous)	@	BugReportModal.jsx:83
-
-
-Error submitting report. Please try again.
+Uncaught runtime errors:
+×
+ERROR
+Failed to execute 'start' on 'SpeechRecognition': recognition has already started.
+InvalidStateError: Failed to execute 'start' on 'SpeechRecognition': recognition has already started.
+    at http://localhost:3000/static/js/bundle.js:53362:40
+    at <anonymous>
