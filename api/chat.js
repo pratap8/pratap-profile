@@ -126,14 +126,14 @@ export default async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    // Use REACT_APP_GROQ_API_KEY (the existing Vercel environment variable)
-    const apiKey = process.env.REACT_APP_GROQ_API_KEY;
+    // Prefer GROQ_API_KEY; fall back to REACT_APP_GROQ_API_KEY for legacy setups
+    const apiKey = process.env.GROQ_API_KEY || process.env.REACT_APP_GROQ_API_KEY;
     console.log("🔑 Using Groq Key:", apiKey ? "✅ Found" : "❌ Missing");
 
     if (!apiKey) {
-      console.error("❌ Missing REACT_APP_GROQ_API_KEY environment variable");
+      console.error("❌ Missing GROQ_API_KEY environment variable");
       return res.status(500).json({ 
-        error: "Missing REACT_APP_GROQ_API_KEY. Verify it exists in Vercel > Settings > Environment Variables" 
+        error: "Missing GROQ_API_KEY. Verify it exists in Vercel > Settings > Environment Variables" 
       });
     }
 
@@ -144,7 +144,7 @@ export default async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL || "meta-llama/llama-prompt-guard-2-86m",
         messages: [
           {
             role: "system",

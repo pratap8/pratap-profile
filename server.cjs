@@ -124,7 +124,7 @@ app.post("/api/chat", async (req, res) => {
   }
 
   try {
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY || '';
     console.log("🔑 Using Groq Key:", apiKey ? "✅ Found" : "❌ Missing");
 
     if (!apiKey) {
@@ -139,7 +139,7 @@ app.post("/api/chat", async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL || "meta-llama/llama-prompt-guard-2-86m",
         messages: [
           {
             role: "system",
