@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import BugReport from "../components/BugReport";
 
 const ProfilePage = () => {
+  const showChatbot = process.env.REACT_APP_SHOW_CHATBOT === "true";
   return (
     <div>
       <Navbar />
@@ -31,7 +32,7 @@ const ProfilePage = () => {
       <Contact />
       <Footer />
       <BugReport />
-      <Chatbot />
+      {showChatbot && <Chatbot />}
       <FeedbackSuggestion />
     </div>
   );
