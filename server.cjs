@@ -132,6 +132,11 @@ app.post("/api/chat", async (req, res) => {
       return res.status(500).json({ error: "Missing GROQ_API_KEY environment variable" });
     }
 
+    // Respect model token limits: default to 512 and allow override via GROQ_MAX_TOKENS
+    let requestedMax = parseInt(process.env.GROQ_MAX_TOKENS || "512", 10);
+    if (isNaN(requestedMax) || requestedMax < 1) requestedMax = 512;
+    const maxTokens = Math.min(requestedMax, 512);
+
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -154,7 +159,7 @@ Important Instructions:
           { role: "user", content: message },
         ],
         temperature: 0.7,
-        max_tokens: 1024,
+        max_tokens: maxTokens,
       }),
     });
 
